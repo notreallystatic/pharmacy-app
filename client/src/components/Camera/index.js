@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Camera from 'react-html5-camera-photo';
+import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 
 export const ClickPicture = (props) => {
@@ -17,6 +17,8 @@ export const ClickPicture = (props) => {
         <img src={dataUri} alt='user' />
       ) : (
         <Camera
+          imageType={IMAGE_TYPES.JPG}
+          idealResolution={{ width: 480, height: 480 }}
           onTakePhotoAnimationDone={handleTakePhotoAnimationDone}
           isFullscreen={isFullscreen}
         />

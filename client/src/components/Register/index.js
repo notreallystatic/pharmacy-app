@@ -1,6 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Modal,
+  AccordionCollapse,
+} from 'react-bootstrap';
 import { ClickPicture } from '../Camera';
+import FormData from 'form-data';
+import axios from 'axios';
 
 export class Register extends Component {
   constructor(props, context) {
@@ -28,7 +38,22 @@ export class Register extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+    const formData = new FormData();
+    formData.append('name', this.state.name);
+    formData.append('picture', this.state.picture);
+
+    axios
+      .post('http://localhost:5000/api/register', formData, {
+        headers: {
+          ContentType: 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   onChange = (e) => {
@@ -64,7 +89,6 @@ export class Register extends Component {
                         value={this.name}
                         onChange={this.onChange}
                         placeholder='Full Name'
-                        required
                       />
                     </Form.Group>
 
@@ -75,7 +99,6 @@ export class Register extends Component {
                         value={this.email}
                         onChange={this.onChange}
                         placeholder='Email Address'
-                        required
                       />
                     </Form.Group>
 
@@ -86,7 +109,6 @@ export class Register extends Component {
                         value={this.password}
                         onChange={this.onChange}
                         placeholder='Password'
-                        required
                       />
                     </Form.Group>
 
@@ -97,7 +119,6 @@ export class Register extends Component {
                         value={this.address}
                         onChange={this.onChange}
                         placeholder='Address'
-                        required
                       />
                     </Form.Group>
 
@@ -107,7 +128,6 @@ export class Register extends Component {
                         type='date'
                         value={this.dob}
                         onChange={this.onChange}
-                        required
                       />
                     </Form.Group>
 
@@ -118,7 +138,6 @@ export class Register extends Component {
                         value={this.contact}
                         onChange={this.onChange}
                         placeholder='Mobile Number'
-                        required
                       />
                     </Form.Group>
                   </Col>
