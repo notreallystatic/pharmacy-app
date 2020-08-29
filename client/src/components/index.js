@@ -1,3 +1,4 @@
-export * from "./Navbar/Navbar";
-export * from "./Login/Login";
-export * from "./Register/Register";
+export * from './Header';
+export * from './Login';
+export * from './Register';
+export * from './Camera';
