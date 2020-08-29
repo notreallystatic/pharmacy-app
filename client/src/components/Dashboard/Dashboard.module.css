@@ -1,0 +1,14 @@
+.medicine {
+  background-image: url('./../../assets/images/medicines.jpg');
+}
+.precription {
+  background-image: url('./../../assets/images/prescription.jpg');
+}
+
+.cardImage {
+  width: 18rem;
+  height: 12rem;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}

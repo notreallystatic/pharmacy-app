@@ -20,6 +20,12 @@ export class Register extends Component {
     };
   }
 
+  componentDidMount() {
+    if (this.props.user) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
     console.log(this.state);
@@ -42,6 +48,11 @@ export class Register extends Component {
       <Fragment>
         <Container>
           <Row className='justify-content-center'>
+            <Col xs={12} className='my-3'>
+              <p>
+                <h3 className='text-center'>Sign up!</h3>
+              </p>
+            </Col>
             <Col xs={12} md={4}>
               <Form onSubmit={this.onSubmit}>
                 <Row className='justify-content-center my-2'>
@@ -134,7 +145,7 @@ export class Register extends Component {
                   className='my-2'
                 >
                   <Button variant='dark' type='submit'>
-                    Log in
+                    Register
                   </Button>
                 </Row>
               </Form>
