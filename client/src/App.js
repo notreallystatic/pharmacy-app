@@ -18,9 +18,7 @@ import {
 import './App.css';
 
 const App = (props) => {
-  const [user, setUser] = useState({
-    name: 'Sachin Kumar',
-  });
+  const [user, setUser] = useState(undefined);
 
   const login = (userData) => {
     setUser(userData);

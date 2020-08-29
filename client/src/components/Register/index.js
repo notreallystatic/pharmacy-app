@@ -40,16 +40,22 @@ export class Register extends Component {
     e.preventDefault();
     const formData = new FormData();
     formData.append('name', this.state.name);
+    formData.append('email', this.state.email);
+    formData.append('password', this.state.password);
+    formData.append('dob', this.state.dob);
+    formData.append('address', this.state.address);
+    formData.append('contact', this.state.contact);
     formData.append('picture', this.state.picture);
 
     axios
-      .post('http://localhost:5000/api/register', formData, {
+      .post('/api/register', formData, {
         headers: {
           ContentType: 'multipart/form-data',
         },
       })
       .then((response) => {
-        console.log(response.data);
+        this.props.login(response.data);
+        this.props.history.push('/');
       })
       .catch((error) => {
         console.log(error.message);

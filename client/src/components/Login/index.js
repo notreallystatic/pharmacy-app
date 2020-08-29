@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
+import FormData from 'form-data';
+import axios from 'axios';
 
 export const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -13,15 +14,18 @@ export const Login = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (email.length === 0 && password.length === 0) {
-      alert('Enter email id and password');
-    } else {
-      console.log(email, password);
-      // post email & username to backend.
-      // If no error then call props.login(userData);
-      props.login({ name: email });
-      props.history.push('/');
-    }
+    axios
+      .post('api/login', {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        props.login(response.data);
+        props.history.push('/');
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
 
   return (
@@ -60,7 +64,7 @@ export const Login = (props) => {
               style={{ display: 'flex', WebkitJustifyContent: 'center' }}
               className='my-2'
             >
-              <Button variant='dark' type='submit' onClick={onSubmit}>
+              <Button variant='dark' type='submit'>
                 Log in
               </Button>
             </Form.Row>
