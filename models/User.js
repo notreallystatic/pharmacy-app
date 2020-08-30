@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const MedSchema = new mongoose.Schema({
   name: String,
+  requiresAuth: Boolean,
 });
 
 const UserSchema = new mongoose.Schema({

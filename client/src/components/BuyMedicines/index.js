@@ -29,13 +29,12 @@ export const BuyMedicines = (props) => {
   }, []);
 
   const updateCart = (e) => {
-    console.log(e.target.id);
-    const [_id, name] = e.target.id.split('-');
+    const [_id, name, requiresAuth] = e.target.id.split('-');
 
     console.log(e.target.checked);
     if (e.target.checked) {
       // uncheck it & remove it from cart
-      setCart([...cart, { _id: _id, name: name }]);
+      setCart([...cart, { _id: _id, name: name, requiresAuth: requiresAuth }]);
     } else {
       // Check it & add it in cart
       const updatedCart = cart.filter((m) => m._id != _id);
@@ -46,14 +45,42 @@ export const BuyMedicines = (props) => {
   const placeOrder = () => {
     if (!cart.length) {
       alert('Please add something to cart');
-    }
-    // if picture is already clicked then simply
-    else if (picture) {
-      // Make an api call to /order to see if the medicines require further auth or not.
-      // if they do, setPicture(true). So that we can take a picture and send it to backend.
-      alert('data sent');
+    } else if (picture) {
+      // Sent the id and picture to backend.
+      const formData = new FormData();
+      formData.append('id', props.user._id);
+      formData.append('picture', picture);
+
+      axios
+        .post('/api/auth', formData, {
+          headers: {
+            ContentType: 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          console.log(response.data.result);
+          if (response.data.result) {
+            alert('Successfully placed an order');
+          } else {
+            alert("Sorry, couldn't recognize your face.");
+          }
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     } else {
-      setRequiresAuth(true);
+      console.log(cart);
+      axios
+        .post('api/refill', {
+          meds: cart,
+        })
+        .then((response) => {
+          setRequiresAuth(response.data.requiresAuth);
+          alert('please click a picture and resubmit again');
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     }
   };
 
@@ -74,7 +101,9 @@ export const BuyMedicines = (props) => {
             {medicines.map((med, index) => {
               return (
                 <Col xs={6} key={med._id}>
-                  <Form.Group controlId={`${med._id}-${med.name}`}>
+                  <Form.Group
+                    controlId={`${med._id}-${med.name}-${med.requiresAuth}`}
+                  >
                     <Form.Check
                       style={{ display: 'inline' }}
                       label={med.name}

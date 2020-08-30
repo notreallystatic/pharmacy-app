@@ -6,7 +6,9 @@ const express = require('express'),
   multer = require('multer'),
   path = require('path'),
   User = require('./models/User'),
-  Medicine = require('./models/Medicine');
+  Medicine = require('./models/Medicine'),
+  request = require('request');
+const { resolve } = require('path');
 
 const app = express();
 
@@ -109,10 +111,11 @@ app.post('/api/add', (req, res) => {
   let newMedicines = req.body.meds;
 
   newMedicines.forEach(async (med) => {
+    let requiresAuth = med.length % 2 ? true : false;
     User.findByIdAndUpdate(
       req.body.id,
       {
-        $push: { meds: { name: med } },
+        $push: { meds: { name: med, requiresAuth: requiresAuth } },
       },
       { new: true },
       (err, result) => {
@@ -131,6 +134,82 @@ app.get('/api/meds/:id', (req, res) => {
     .catch((error) => {
       res.status(401).json({ message: error.message });
     });
+});
+
+function checkAuth(meds) {
+  return new Promise((resolve, reject) => {
+    let requiresAuth = false;
+    meds.forEach((med) => {
+      if (med.requiresAuth) requiresAuth = true;
+    });
+    resolve(requiresAuth);
+  });
+}
+
+app.post('/api/refill', async (req, res) => {
+  const meds = req.body.meds;
+  const id = req.body.id;
+  checkAuth(meds).then((requiresAuth) => {
+    res.json({ requiresAuth: requiresAuth });
+  });
+});
+
+// Route to recognize face.
+app.post('/api/auth', upload.single('image'), (req, sendRes) => {
+  const id = req.body.id;
+  let base64Image = req.body.picture.split(';base64,').pop();
+  fs.writeFile(
+    `./upload/temp/${id + 2}.jpeg`,
+    base64Image,
+    { encoding: 'base64' },
+    (err) => {
+      if (err) console.log(err);
+
+      // img1: './upload/${id}.jpeg'
+      // img2: './upload/temp/${id}.jpeg'
+
+      var options = {
+        method: 'POST',
+        url: 'https://biometricvisionapi.com/v1/compare',
+        headers: {
+          'X-Authentication-Token':
+            'a0SVrkEXPgsut9iMK9HR8CtbkLBkbw70JLDKXtX721cEVrHiEevKCsr5CvYniLeK',
+          Content: 'application/json',
+          Accept: 'application/json',
+        },
+        formData: {
+          image1: {
+            value: fs.createReadStream(`./upload/${id}.jpeg`),
+            options: {
+              filename: `${id}.jpeg`,
+              contentType: null,
+            },
+          },
+          image2: {
+            value: fs.createReadStream(`./upload/temp/${id + 2}.jpeg`),
+            options: {
+              filename: `${id + 2}.jpeg`,
+              contentType: null,
+            },
+          },
+        },
+      };
+
+      request(options, (err, res) => {
+        if (err) {
+          console.log(err.message);
+        }
+        const faceResult = JSON.parse(res.body);
+        console.log(faceResult);
+        console.log(faceResult['confidence']);
+        const result = faceResult['confidence'] === 'Match' ? true : false;
+        console.log(result);
+        sendRes.json({
+          result: result,
+        });
+      });
+    }
+  );
 });
 
 // app.get('*', (req, res) => {
