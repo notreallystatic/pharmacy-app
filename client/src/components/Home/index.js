@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Component, Row, Col, Container, Card, Button } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { Dashboard } from '../Dashboard';
@@ -6,9 +6,9 @@ import { Illustrations } from '../../assets/illustrations';
 import { Redirect } from 'react-router-dom';
 
 export const Home = (props) => {
-  if (props.user) {
-    return <Redirect to='/dashboard' />;
-  }
+  useEffect(() => {
+    if (props.user) props.history.push('/dashboard');
+  }, []);
 
   return (
     <Container

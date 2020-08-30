@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import ChipInput from 'material-ui-chip-input';
+import axios from 'axios';
 
 export const AddMedicines = (props) => {
   const [medicines, setMedicines] = useState([]);
@@ -24,7 +25,17 @@ export const AddMedicines = (props) => {
   const onSubmit = () => {
     if (!medicines.length) alert('Enter atleast one medicine');
     else {
-      // Submit the medicines to the DB and redirect use to dashboard.
+      axios
+        .post('api/add', {
+          meds: medicines,
+          id: props.user._id,
+        })
+        .then((response) => {
+          // Do nothing
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
       props.history.push('/');
     }
   };

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 // Create Schema
+
+const MedSchema = new mongoose.Schema({
+  name: String,
+});
+
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -30,6 +35,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  meds: [MedSchema],
 });
 
 const User = mongoose.model('User', UserSchema);

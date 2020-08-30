@@ -20,12 +20,23 @@ import './App.css';
 const App = (props) => {
   const [user, setUser] = useState(undefined);
 
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      const data = localStorage.getItem('user');
+      setUser(JSON.parse(data));
+    }
+  }, []);
+
   const login = (userData) => {
+    console.log(userData);
+
     setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(undefined);
+    localStorage.clear();
   };
 
   return (

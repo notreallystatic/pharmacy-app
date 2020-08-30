@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { ClickPicture } from '../Camera';
+import axios from 'axios';
 
 const fuzzysort = require('fuzzysort');
 
@@ -16,43 +17,28 @@ export const BuyMedicines = (props) => {
     if (!props.user) props.history.push('/');
     else {
       // Get the medicines from backend for the user : props.user._id & then fill the medicines array
-      const data = [
-        {
-          name: 'abc',
-          id: 123,
-        },
-        {
-          name: 'def',
-          id: 124,
-        },
-        {
-          name: 'ghi',
-          id: 125,
-        },
-        {
-          name: 'jkl',
-          id: 126,
-        },
-        {
-          name: 'mno',
-          id: 127,
-        },
-      ];
-      setMedicines(data);
+      axios
+        .get(`api/meds/${props.user._id}`)
+        .then((res) => {
+          setMedicines(res.data.meds);
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
     }
   }, []);
 
   const updateCart = (e) => {
     console.log(e.target.id);
-    const [id, name] = e.target.id.split('-');
+    const [_id, name] = e.target.id.split('-');
 
     console.log(e.target.checked);
     if (e.target.checked) {
       // uncheck it & remove it from cart
-      setCart([...cart, { id: id, name: name }]);
+      setCart([...cart, { _id: _id, name: name }]);
     } else {
       // Check it & add it in cart
-      const updatedCart = cart.filter((m) => m.id != id);
+      const updatedCart = cart.filter((m) => m._id != _id);
       setCart(updatedCart);
     }
   };
@@ -63,7 +49,6 @@ export const BuyMedicines = (props) => {
     }
     // if picture is already clicked then simply
     else if (picture) {
-      console.log(cart);
       // Make an api call to /order to see if the medicines require further auth or not.
       // if they do, setPicture(true). So that we can take a picture and send it to backend.
       alert('data sent');
@@ -88,8 +73,8 @@ export const BuyMedicines = (props) => {
           <Row>
             {medicines.map((med, index) => {
               return (
-                <Col xs={6} key={med.id}>
-                  <Form.Group controlId={`${med.id}-${med.name}`}>
+                <Col xs={6} key={med._id}>
+                  <Form.Group controlId={`${med._id}-${med.name}`}>
                     <Form.Check
                       style={{ display: 'inline' }}
                       label={med.name}

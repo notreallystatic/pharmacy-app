@@ -33,7 +33,7 @@ export const Login = (props) => {
       <Row className='justify-content-center'>
         <Col xs={12} className='my-3'>
           <p>
-            <h3 className='text-center'>Sign up!</h3>
+            <h3 className='text-center'>Sign in!</h3>
           </p>
         </Col>
         <Col xs={12} md={6}>

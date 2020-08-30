@@ -1,22 +1,32 @@
 import React, { Component, Fragment } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { createHashHistory } from 'history';
 
-export const Header = ({ user, logout }) => {
+const history = createHashHistory();
+
+export const Header = (props) => {
   return (
     <Navbar bg='dark' variant='dark' expand='lg'>
-      <Link to='/' className='navbar-brand'>
+      <Link to='/dashboard' className='navbar-brand'>
         Pharma
       </Link>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav'>
         <Nav className='ml-auto'>
-          {user ? (
+          {props.user ? (
             <Fragment>
               <Nav.Link disabled href='#'>
-                Welcome : {user.name}{' '}
+                Welcome : {props.user.name}{' '}
               </Nav.Link>
-              <Link to='/' className='nav-link' onClick={logout}>
+              <Link
+                to='/'
+                className='nav-link'
+                onClick={() => {
+                  history.push('/');
+                  props.logout();
+                }}
+              >
                 Logout
               </Link>
             </Fragment>
