@@ -77,11 +77,13 @@ export class Register extends Component {
   render() {
     return (
       <Fragment>
-        <Container>
-          <Row className='justify-content-center'>
+        <Container className='my-1'>
+          <Row className='justify-content-center mb-5'>
             <Col xs={12} className='my-3'>
               <p>
-                <h3 className='text-center'>Sign up!</h3>
+                <h3 className='text-center'>
+                  Sign up Stranger! We love to have you here.
+                </h3>
               </p>
             </Col>
             <Col xs={12} md={4}>
@@ -149,19 +151,6 @@ export class Register extends Component {
                   </Col>
                 </Row>
 
-                <Row>
-                  {this.state.showCamera ? (
-                    <ClickPicture setPicture={this.setPicture} />
-                  ) : (
-                    <Button
-                      variant='success'
-                      onClick={() => this.setState({ showCamera: true })}
-                    >
-                      Use Camera
-                    </Button>
-                  )}
-                </Row>
-
                 <Row
                   style={{
                     display: 'flex',
@@ -169,8 +158,18 @@ export class Register extends Component {
                   }}
                   className='my-2'
                 >
+                  {this.state.showCamera ? (
+                    <ClickPicture setPicture={this.setPicture} />
+                  ) : (
+                    <Button
+                      variant='success'
+                      onClick={() => this.setState({ showCamera: true })}
+                    >
+                      Use Camera&nbsp;<span className='fas fa-camera'></span>
+                    </Button>
+                  )}
                   <Button variant='dark' type='submit'>
-                    Register
+                    Register&nbsp;<span className='fas fa-user-plus'></span>
                   </Button>
                 </Row>
               </Form>

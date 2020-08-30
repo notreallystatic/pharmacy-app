@@ -38,7 +38,8 @@ export const Dashboard = (props) => {
                   variant='success'
                   onClick={() => props.history.push('/buy')}
                 >
-                  Buy Medicines
+                  Buy Medicines&nbsp;
+                  <span className='fas fa-shopping-cart'></span>
                 </Button>
               </div>
             </Card.Body>
@@ -66,7 +67,8 @@ export const Dashboard = (props) => {
                   variant='primary'
                   onClick={() => props.history.push('/add')}
                 >
-                  Add Medicines?
+                  Add Precription?&nbsp;
+                  <i className='fas fa-clipboard-list'></i>
                 </Button>
               </div>
             </Card.Body>

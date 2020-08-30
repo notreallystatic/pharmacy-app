@@ -45,6 +45,10 @@ export const AddMedicines = (props) => {
         .catch((error) => {
           console.log(error.message);
         });
+      addToast(`Successfully added new medicines!😎`, {
+        appearance: 'success',
+        autoDismiss: true,
+      });
       props.history.push('/');
     }
   };
@@ -65,8 +69,51 @@ export const AddMedicines = (props) => {
       </Row>
       <Row className='flex centerH my-4'>
         <Button variant='dark' size='lg' onClick={onSubmit}>
-          Add!
+          Add!&nbsp;<i className='fas fa-plus-square'></i>
         </Button>
+      </Row>
+      <Row className='my-1'>
+        <Col xs={12} md={6}>
+          <h3>Some links you might find useful</h3>
+          <ul>
+            <li>
+              <h5>
+                <small>
+                  <a
+                    href='https://www.youtube.com/watch?v=D9tTi-CDjDU'
+                    target='_blank'
+                  >
+                    What is Coronavirus
+                  </a>
+                </small>
+              </h5>
+            </li>
+            <li>
+              <h5>
+                <small>
+                  <a
+                    href='https://www.youtube.com/watch?v=21MIvkk7Imc'
+                    target='_blank'
+                  >
+                    Ways to protect yourself from Corona.
+                  </a>
+                </small>
+              </h5>
+            </li>
+            <li>
+              <h5>
+                <small>
+                  <a
+                    href='https://www.youtube.com/watch?v=bvLvExUxlNE'
+                    target='_blank'
+                  >
+                    Why you should run everyday?
+                  </a>
+                </small>
+              </h5>
+            </li>
+          </ul>
+        </Col>
       </Row>
     </Container>
   );

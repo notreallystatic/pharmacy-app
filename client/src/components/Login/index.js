@@ -70,7 +70,7 @@ export const Login = (props) => {
               className='my-2'
             >
               <Button variant='dark' type='submit'>
-                Log in
+                Log in&nbsp;<span className='fas fa-sign-in-alt'></span>
               </Button>
             </Form.Row>
           </Form>

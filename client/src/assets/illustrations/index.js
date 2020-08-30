@@ -1,7 +1,7 @@
-import login from './login.svg';
-import register from './register.svg';
+import welcome from './welcome.svg';
+import doctors from './doctors.svg';
 
 export const Illustrations = {
-  login,
-  register,
+  welcome,
+  doctors,
 };

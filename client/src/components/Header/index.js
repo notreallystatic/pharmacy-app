@@ -9,7 +9,7 @@ export const Header = (props) => {
   return (
     <Navbar bg='dark' variant='dark' expand='lg'>
       <Link to='/dashboard' className='navbar-brand'>
-        Pharma
+        Pharma&nbsp;<span className='fas fa-file-medical-alt'></span>
       </Link>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav'>
@@ -17,7 +17,8 @@ export const Header = (props) => {
           {props.user ? (
             <Fragment>
               <Nav.Link disabled href='#'>
-                Welcome : {props.user.name}{' '}
+                Welcome : {props.user.name}&nbsp;
+                <i className='fas fa-user-tie'></i>
               </Nav.Link>
               <Link
                 to='/'
@@ -27,16 +28,16 @@ export const Header = (props) => {
                   props.logout();
                 }}
               >
-                Logout
+                Logout&nbsp;<i className='fas fa-sign-out-alt'></i>
               </Link>
             </Fragment>
           ) : (
             <Fragment>
               <Link to='/login' className='nav-link'>
-                Sign in
+                Sign in&nbsp;<span className='fas fa-sign-in-alt'></span>
               </Link>
               <Link to='/register' className='nav-link'>
-                Sign up
+                Sign up&nbsp;<span className='fas fa-user-plus'></span>
               </Link>
             </Fragment>
           )}

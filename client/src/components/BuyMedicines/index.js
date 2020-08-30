@@ -169,12 +169,7 @@ export const BuyMedicines = (props) => {
             })}
           </Row>
         </Col>
-        <Col
-          xs={12}
-          md={6}
-          style={{ background: 'white' }}
-          className='my-2 py-2'
-        >
+        <Col xs={12} md={6} className='my-2 py-2'>
           <h3 style={{ display: 'inline' }}>Cart:</h3>
           <div style={{ display: 'inline' }}>
             {cart.map((med, index) => {
@@ -204,7 +199,7 @@ export const BuyMedicines = (props) => {
               <ClickPicture setPicture={clickPicture} />
             ) : (
               <Button variant='success' onClick={() => showCamera(true)}>
-                Use Camera
+                Use Camera&nbsp;<i className='fas fa-camera'></i>
               </Button>
             )}
           </Row>
@@ -217,9 +212,52 @@ export const BuyMedicines = (props) => {
         style={{ display: 'flex', justifyContent: 'center' }}
       >
         <Button variant='dark' size='lg' onClick={placeOrder}>
-          Order Now!
+          Order Now!&nbsp;<i className='fas fa-shopping-basket'></i>
         </Button>
       </Col>
+      <Row>
+        <Col xs={12} md={6}>
+          <h3>Some links you might find useful</h3>
+          <ul>
+            <li>
+              <h5>
+                <small>
+                  <a
+                    href='https://www.youtube.com/watch?v=D9tTi-CDjDU'
+                    target='_blank'
+                  >
+                    What is Coronavirus
+                  </a>
+                </small>
+              </h5>
+            </li>
+            <li>
+              <h5>
+                <small>
+                  <a
+                    href='https://www.youtube.com/watch?v=21MIvkk7Imc'
+                    target='_blank'
+                  >
+                    Ways to protect yourself from Corona.
+                  </a>
+                </small>
+              </h5>
+            </li>
+            <li>
+              <h5>
+                <small>
+                  <a
+                    href='https://www.youtube.com/watch?v=bvLvExUxlNE'
+                    target='_blank'
+                  >
+                    Why you should run everyday?
+                  </a>
+                </small>
+              </h5>
+            </li>
+          </ul>
+        </Col>
+      </Row>
     </Container>
   );
 };
