@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Badge } from 'react-bootstrap';
 import { ClickPicture } from '../Camera';
 import axios from 'axios';
+import { useToasts } from 'react-toast-notifications';
 
 const fuzzysort = require('fuzzysort');
 
 export const BuyMedicines = (props) => {
+  const { addToast } = useToasts();
   const [medicines, setMedicines] = useState([]);
   const [cart, setCart] = useState([]);
   const [requiresAuth, setRequiresAuth] = useState(false);
@@ -23,7 +25,13 @@ export const BuyMedicines = (props) => {
           setMedicines(res.data.meds);
         })
         .catch((error) => {
-          alert(error.message);
+          addToast(
+            `Sorry🙁, we couldn't fetch your medicines. Please, try again later. 🤗`,
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
         });
     }
   }, []);
@@ -60,26 +68,59 @@ export const BuyMedicines = (props) => {
         .then((response) => {
           console.log(response.data.result);
           if (response.data.result) {
-            alert('Successfully placed an order');
+            addToast(
+              `We confirmed it's really you. Your order is placed, you can now sit back and relax!😊`,
+              {
+                appearance: 'success',
+                autoDismiss: true,
+              }
+            );
           } else {
-            alert("Sorry, couldn't recognize your face.");
+            addToast(
+              `It seems that you aren't ${props.user.name}😮. So, we couldn't place your order. Contact our admin if you still think there's a problem from our side.🙋‍♂️`,
+              {
+                appearance: 'error',
+                autoDismiss: true,
+              }
+            );
+            setPicture(null);
           }
+          props.history.push('/dashboard');
         })
         .catch((error) => {
-          console.log(error.message);
+          console.log(error);
         });
     } else {
-      console.log(cart);
       axios
         .post('api/refill', {
           meds: cart,
         })
         .then((response) => {
-          setRequiresAuth(response.data.requiresAuth);
-          alert('please click a picture and resubmit again');
+          if (response.data.requiresAuth) {
+            setRequiresAuth(response.data.requiresAuth);
+            addToast(
+              `It seems that some of the medicines in your cart requires face atuhentication. Plese, click a picture and submit again`,
+              {
+                appearance: 'warning',
+                autoDismiss: true,
+              }
+            );
+          } else {
+            addToast(`Successfully placed your order!🤩`, {
+              appearance: 'success',
+              autoDismiss: true,
+            });
+            props.history.push('/');
+          }
         })
         .catch((error) => {
-          console.log(error.message);
+          addToast(
+            `There was some error while placing your order, please try again later. 🤗`,
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            }
+          );
         });
     }
   };
@@ -94,14 +135,20 @@ export const BuyMedicines = (props) => {
         <h3 className='text-center w-100 my-2'>Buy new medicines:</h3>
         <Col xs={12} md={6} className='order-1 order-md-2 my-2'>
           <h3 className='text-center w-100 my-2'>
-            Select the medicines to buy:
+            <small>Select the medicines to buy</small>
           </h3>
-
+          <p className='text-center'>
+            <Badge pill variant='danger'>
+              RFA
+            </Badge>
+            &nbsp;=&nbsp;<small>Requires Face Auth</small>
+          </p>
           <Row>
             {medicines.map((med, index) => {
               return (
                 <Col xs={6} key={med._id}>
                   <Form.Group
+                    style={{ display: 'flex', alignItems: 'center' }}
                     controlId={`${med._id}-${med.name}-${med.requiresAuth}`}
                   >
                     <Form.Check
@@ -109,6 +156,13 @@ export const BuyMedicines = (props) => {
                       label={med.name}
                       onClick={updateCart}
                     />
+                    {med.requiresAuth ? (
+                      <small>
+                        <Badge pill variant='danger'>
+                          <small>RFA</small>
+                        </Badge>
+                      </small>
+                    ) : null}
                   </Form.Group>
                 </Col>
               );

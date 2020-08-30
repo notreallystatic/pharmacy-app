@@ -3,8 +3,10 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import FormData from 'form-data';
 import axios from 'axios';
+import { useToasts } from 'react-toast-notifications';
 
 export const Login = (props) => {
+  const { addToast } = useToasts();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,7 +26,10 @@ export const Login = (props) => {
         props.history.push('/');
       })
       .catch((error) => {
-        console.log(error.message);
+        addToast(`Please check your Eamil & password again. 🤗`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
       });
   };
 

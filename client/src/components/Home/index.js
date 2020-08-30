@@ -7,8 +7,15 @@ import { Redirect } from 'react-router-dom';
 
 export const Home = (props) => {
   useEffect(() => {
+    console.log(props.user);
     if (props.user) props.history.push('/dashboard');
   }, []);
+
+  useEffect(() => {
+    if (props.user) {
+      props.history.push('/dashboard');
+    }
+  }, props.user);
 
   return (
     <Container

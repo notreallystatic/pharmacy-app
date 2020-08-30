@@ -34,7 +34,12 @@ export const Dashboard = (props) => {
                 quickly.
               </Card.Text>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Button variant='success' onClick={() => props.history.push("/buy")}>Buy Medicines</Button>
+                <Button
+                  variant='success'
+                  onClick={() => props.history.push('/buy')}
+                >
+                  Buy Medicines
+                </Button>
               </div>
             </Card.Body>
           </Card>
@@ -52,9 +57,17 @@ export const Dashboard = (props) => {
             />
             <Card.Body>
               <Card.Title>New Prescription?</Card.Title>
-              <Card.Text>Update your new medicines.</Card.Text>
+              <Card.Text>
+                Got a new Precription? Dont worry! Head over here and add in
+                your new medicines!
+              </Card.Text>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Button variant='primary' onClick={() => props.history.push("/add")}>Add Medicines?</Button>
+                <Button
+                  variant='primary'
+                  onClick={() => props.history.push('/add')}
+                >
+                  Add Medicines?
+                </Button>
               </div>
             </Card.Body>
           </Card>

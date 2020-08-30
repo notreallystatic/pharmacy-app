@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import ChipInput from 'material-ui-chip-input';
 import axios from 'axios';
+import { useToasts } from 'react-toast-notifications';
 
 export const AddMedicines = (props) => {
+  const { addToast } = useToasts();
   const [medicines, setMedicines] = useState([]);
 
   useEffect(() => {
@@ -23,15 +25,22 @@ export const AddMedicines = (props) => {
   };
 
   const onSubmit = () => {
-    if (!medicines.length) alert('Enter atleast one medicine');
-    else {
+    if (!medicines.length) {
+      addToast(`You need to enter at least one medicine.🥱`, {
+        appearance: 'warning',
+        autoDismiss: true,
+      });
+    } else {
       axios
         .post('api/add', {
           meds: medicines,
           id: props.user._id,
         })
         .then((response) => {
-          // Do nothing
+          addToast(`Successfully added your new meds!🤩`, {
+            appearance: 'success',
+            autoDismiss: true,
+          });
         })
         .catch((error) => {
           console.log(error.message);

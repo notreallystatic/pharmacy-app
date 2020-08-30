@@ -140,7 +140,7 @@ function checkAuth(meds) {
   return new Promise((resolve, reject) => {
     let requiresAuth = false;
     meds.forEach((med) => {
-      if (med.requiresAuth) requiresAuth = true;
+      if (med.requiresAuth === 'true') requiresAuth = true;
     });
     resolve(requiresAuth);
   });
@@ -149,9 +149,15 @@ function checkAuth(meds) {
 app.post('/api/refill', async (req, res) => {
   const meds = req.body.meds;
   const id = req.body.id;
-  checkAuth(meds).then((requiresAuth) => {
-    res.json({ requiresAuth: requiresAuth });
-  });
+  console.log(meds);
+  checkAuth(meds)
+    .then((requiresAuth) => {
+      console.log(requiresAuth);
+      res.json({ requiresAuth: requiresAuth });
+    })
+    .catch((error) => {
+      res.status(401).json({ message: error.message });
+    });
 });
 
 // Route to recognize face.
